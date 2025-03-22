@@ -2,6 +2,8 @@ package com.example.myapplication.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.Image
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,11 +60,60 @@ import com.example.myapplication.R
 
 data class NewsItem(val title: String, val description: String, val imageUrl: Int)
 
+data class BottomNavigationItem(
+    val title: String,
+    val icon: Int
+)
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
 fun HomeScreen() {
+    val bottomNavigationItems = listOf(
+        BottomNavigationItem(
+            title = "Profile",
+            icon = R.drawable.profile
+
+        ),
+        BottomNavigationItem(
+            title = "Home",
+            icon = R.drawable.home_filled
+        ),
+        BottomNavigationItem(
+            title = "Bookmark",
+            icon = R.drawable.bookmark
+        )
+    )
+
     Scaffold(
+        bottomBar = {
+            NavigationBar(
+                containerColor = Color.Transparent, // پس‌زمینه سفید
+
+
+            ){
+
+                bottomNavigationItems.forEach { item ->
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = { },
+                        icon = {
+                            if(item.title == "Home"){
+                                Icon(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.title,
+                                tint = MaterialTheme.colorScheme.primary)
+                            }else{
+                                 Icon(painter = painterResource(id = item.icon),
+                                     contentDescription = item.title, tint = MaterialTheme.colorScheme.onSurface)
+                                }
+                               },
+                        label = { Text(text = item.title , color = if(item.title == "Home")MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface) }
+                    )
+                }
+            }
+        },
         topBar = {
             TopAppBar(
                 modifier = Modifier.padding(horizontal = 20.dp , vertical = 28.dp),
@@ -101,9 +153,7 @@ fun HomeScreen() {
                     }
 
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+
             )
         },
         content = {

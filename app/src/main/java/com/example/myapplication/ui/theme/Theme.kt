@@ -37,7 +37,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun MyApplicationTheme(content: @Composable () -> Unit) {
         val colorScheme = lightColorScheme(
-                primary = Color(0xFF6200EE),
+                primary = Color(0xFF1877F2),
                 secondary = Color(0xFF03DAC5),
                 background = Color(0xFFFFFFFF),
                 surface = Color(0xFFFFFFFF),
