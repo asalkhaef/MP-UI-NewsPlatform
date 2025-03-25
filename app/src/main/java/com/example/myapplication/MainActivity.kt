@@ -20,14 +20,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
-                var isLoggedIn by
-                remember { mutableStateOf(false) } // وضعیت لاگین
-
-                if (isLoggedIn) {
-                    HomeScreen() // نمایش صفحه اصلی
-                } else {
-                    LoginScreen(onLoginSuccess = { isLoggedIn = true }) // مقداردهی onLoginSuccess
-                }
+                HomeScreen()
+//                var isLoggedIn by
+//                remember { mutableStateOf(false) } // وضعیت لاگین
+//
+//                if (isLoggedIn) {
+//                    HomeScreen() // نمایش صفحه اصلی
+//                } else {
+//                    LoginScreen(onLoginSuccess = { isLoggedIn = true }) // مقداردهی onLoginSuccess
+//                }
             }
         }
     }
