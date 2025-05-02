@@ -19,7 +19,7 @@ import com.example.myapplication.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BBCNewsScreen() {
+fun NewsScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -56,7 +56,7 @@ fun NewsContent(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState()) // for scrolling if needed
         ) {
-            // تصویر خبر
+            // news img
             Image(
                 painter = painterResource(id = R.drawable.pic_new_trending),
                 contentDescription = "news img",
@@ -134,6 +134,6 @@ fun NewsContent(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewBBCNewsArticle() {
-    BBCNewsScreen()
+fun PreviewNewsArticle() {
+    NewsScreen()
 }
