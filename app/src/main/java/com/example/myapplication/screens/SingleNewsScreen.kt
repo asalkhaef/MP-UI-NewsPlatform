@@ -16,8 +16,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BBCNewsArticle() {
+fun BBCNewsScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("") },
+                navigationIcon = {
+                    IconButton(onClick = { /* Handle back navigation */ }) {
+                        Icon(
+                            painterResource(id = R.drawable.back_icon),
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        NewsContent(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        )
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NewsContent(modifier: Modifier = Modifier) {
     Surface(
         color = Color.White,
         modifier = Modifier.fillMaxSize()
@@ -33,7 +62,7 @@ fun BBCNewsArticle() {
                 contentDescription = "news img",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(350.dp),
                 contentScale = ContentScale.Crop
             )
 
@@ -106,5 +135,5 @@ fun BBCNewsArticle() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewBBCNewsArticle() {
-    BBCNewsArticle()
+    BBCNewsScreen()
 }
