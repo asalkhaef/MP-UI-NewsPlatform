@@ -58,7 +58,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.R
+import com.example.myapplication.models.NewsRepository
+import com.example.myapplication.models.RetrofitInstance
 
 
 data class NewsItem(val title: String, val description: String, val imageUrl: Int)
@@ -72,7 +75,10 @@ data class BottomNavigationItem(
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen( newsViewModel: NewsViewModel = viewModel(factory = NewsViewModelFactory(
+    NewsRepository(RetrofitInstance.api)
+))) {
+
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
             title = "Profile",
