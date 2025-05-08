@@ -15,11 +15,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen() {
+    var isBookmarked by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -29,6 +35,18 @@ fun NewsScreen() {
                         Icon(
                             painterResource(id = R.drawable.back_icon),
                             contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { isBookmarked = !isBookmarked }) {
+                        Image(
+                            painter = painterResource(
+                                id = if (isBookmarked) R.drawable.ic_bookmark_filled
+                                else R.drawable.ic_bookmark_empty
+                            ),
+                            contentDescription = "Bookmark",
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
