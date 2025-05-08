@@ -121,8 +121,8 @@ fun NewsContent(modifier: Modifier = Modifier) {
                 // news category
                 Text(
                     text = "Europe",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
                     color = Color.Black
                 )
 
