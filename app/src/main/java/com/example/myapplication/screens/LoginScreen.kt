@@ -8,16 +8,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
@@ -104,16 +105,25 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         Button(
             onClick = {
-                if (username == "admin" && password == "1234") {
-                    onLoginSuccess() // اجرای لاگین موفق
+                CoroutineScope(Dispatchers.IO).launch {
+                    val success = login(username, password)
+                    withContext(Dispatchers.Main) {
+                        if (success) {
+                            onLoginSuccess()
+                        } else {
+                            // TODO: Show an error message (e.g., Toast, Snackbar)
+                        }
+                    }
                 }
             },
-            modifier = Modifier.fillMaxWidth().height(50.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
             shape = RoundedCornerShape(8.dp)
-
         ) {
             Text("Login", fontSize = 16.sp, fontWeight = FontWeight.W700)
         }
+
 
         Spacer(modifier = Modifier.height(16.dp))
         Row(modifier = Modifier.align(CenterHorizontally)) {
