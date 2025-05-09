@@ -28,7 +28,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(onLoginSuccess: () -> Unit) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
 
@@ -55,10 +55,11 @@ fun LoginScreen() {
             val account = task.getResult(ApiException::class.java)
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
             auth.signInWithCredential(credential).addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
+                if (task.isSuccessful) {
+                    onLoginSuccess() // تغییر وضعیت لاگین
+                } else {
                     errorMessage = "Google Sign-In failed: ${task.exception?.message}"
                 }
-                // لاگین موفق، MainActivity خودش به HomeScreen هدایت می‌کنه
             }
         } catch (e: ApiException) {
             errorMessage = "Google Sign-In error: ${e.message}"
@@ -131,7 +132,7 @@ fun LoginScreen() {
                         auth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    // لاگین موفق
+                                    onLoginSuccess() // تغییر وضعیت لاگین
                                     errorMessage = null
                                 } else {
                                     errorMessage = "Login failed: ${task.exception?.message}"
