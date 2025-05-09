@@ -1,5 +1,6 @@
 package com.example.myapplication.screens
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,14 +14,26 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
+import com.google.gson.Gson
+
+data class User(val username: String, val password: String)
+
+fun readUsersFromJson(context: Context): List<User> {
+    val json = context.assets.open("users.json").bufferedReader().use { it.readText() }
+    return Gson().fromJson(json, object : TypeToken<List<User>>() {}.type)
+}
+
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: (String) -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isRememberMeChecked by remember { mutableStateOf(false) }
@@ -102,10 +115,13 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val context = LocalContext.current
+        val users = remember { readUsersFromJson(context) }
         Button(
             onClick = {
-                if (username == "admin" && password == "1234") {
-                    onLoginSuccess() // اجرای لاگین موفق
+                val userExists = users.any { it.username == username && it.password == password }
+                if (userExists) {
+                    onLoginSuccess(username)
                 }
             },
             modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -141,3 +157,4 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
+

@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 //noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
@@ -22,13 +23,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.myapplication.R
 
+
 @Composable
-fun ProfileScreen() {
-    val username = remember { mutableStateOf("userName") }
-    val fullName = remember { mutableStateOf("Ali Bokaei") }
-    val email = remember { mutableStateOf("Alibokaei@news.com") }
+fun ProfileScreen(navController: NavHostController,username: String) {
+//    val username = remember { mutableStateOf("Alibokaei008") }
+    val fullName = remember { mutableStateOf("") }
+    val email = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -36,8 +40,6 @@ fun ProfileScreen() {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
         Spacer(modifier = Modifier.height(16.dp))
 
         Icon(
@@ -46,8 +48,10 @@ fun ProfileScreen() {
             modifier = Modifier
                 .size(28.dp)
                 .align(Alignment.Start)
+                .clickable {
+                    navController.popBackStack()
+                }
         )
-
         Text(text = "Fill your Profile", fontSize = 20.sp, fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -65,7 +69,7 @@ fun ProfileScreen() {
                     .border(2.dp, Color.Gray, CircleShape)
             )
             Icon(
-                imageVector = Icons.Default.CameraAlt, // Correct icon
+                imageVector = Icons.Default.CameraAlt,
                 contentDescription = "Edit Photo",
                 tint = Color.Black,
                 modifier = Modifier
@@ -78,12 +82,7 @@ fun ProfileScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        OutlinedTextField(
-            value = username.value,
-            onValueChange = { username.value = it },
-            label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        Text(text = "Username: $username", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
 
         Spacer(modifier = Modifier.height(12.dp))
 
