@@ -3,6 +3,7 @@ package com.example.myapplication.screens
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,6 +33,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(onLoginSuccess: () -> Unit) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
+
 
     // متغیرهای حالت برای ایمیل و رمز عبور
     var email by remember { mutableStateOf("") }
@@ -107,7 +110,9 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
+
             // فیلد رمز عبور
+
             Text(
                 text = "Password",
                 fontSize = 16.sp,
@@ -195,4 +200,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             }
         }
     }
+
 }
+
+

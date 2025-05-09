@@ -19,11 +19,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsScreen() {
+fun NewsScreen(navController: NavHostController) {
     var isBookmarked by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -31,7 +33,7 @@ fun NewsScreen() {
             TopAppBar(
                 title = { Text("") },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painterResource(id = R.drawable.back_icon),
                             contentDescription = "Back"
@@ -150,8 +152,8 @@ fun NewsContent(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewNewsArticle() {
-    NewsScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewNewsArticle() {
+//    NewsScreen()
+//}

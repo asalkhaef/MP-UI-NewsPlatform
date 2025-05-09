@@ -53,7 +53,13 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.android)
     implementation(libs.androidx.material.icons.extended)
+
     implementation(libs.firebase.auth.ktx)
+
+    implementation(libs.androidx.navigation.compose.v277)
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.firebase.crashlytics.buildtools)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

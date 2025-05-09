@@ -40,6 +40,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.myapplication.R
 
 
@@ -50,11 +52,10 @@ data class BottomNavigationItem(
     val icon: Int
 )
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
             title = "Profile",
@@ -82,7 +83,14 @@ fun HomeScreen() {
                 bottomNavigationItems.forEach { item ->
                     NavigationBarItem(
                         selected = false,
-                        onClick = { },
+                        onClick = {
+                            if (item.title == "Profile") {
+                                navController.navigate("profile") {
+                                    // جلوگیری از ساختن چند instance مشابه در back stack
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }}
+                        },
                         icon = {
                             if(item.title == "Home"){
                                 Icon(
@@ -205,7 +213,8 @@ fun HomeScreen() {
                             title = "Europe",
                             description = "Ukraine's President Zelensky to BBC: Blood money being paid...$index",
                             imageUrl = R.drawable.pic_new_trending
-                        )
+                        ),
+                        navController = navController
                     )
                 }
             }
@@ -214,14 +223,14 @@ fun HomeScreen() {
 }
 
 @Composable
-fun NewsItemCard(newsItem: NewsItem) {
+fun NewsItemCard(newsItem: NewsItem,navController: NavHostController) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp)
             .clickable {
-                // Handle click here
+                navController.navigate("singleNews")
             }
             , colors = CardDefaults.cardColors(containerColor = Color.Transparent)
             ) {
@@ -244,9 +253,9 @@ fun NewsItemCard(newsItem: NewsItem) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun HomeScreenPreview() {
+//    HomeScreen()
+//}
 
