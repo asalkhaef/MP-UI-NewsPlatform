@@ -44,6 +44,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.newsapp.data.model.Article
 import com.example.newsapp.viewmodel.NewsViewModel
@@ -84,30 +85,40 @@ fun HomeScreen(viewModel: NewsViewModel) {
 
 @Composable
 fun NewsItemCard(article: Article) {
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp)
-            .clickable {
-                // Handle click here
-            }
-            , colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-            ) {
+            .clickable { /* Handle click */ },
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Image(
-                painter = painterResource(id = R.drawable.pic_new_trending),
+            // نمایش تصویر با Coil
+            AsyncImage(
+                model = article.urlToImage,
                 contentDescription = "News Image",
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.loading_pic), // تصویر جایگزین هنگام لود
+                error = painterResource(R.drawable.alert_pic) // تصویر جایگزین در صورت خطا
             )
+
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = article.title ?: "No-title", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                Text(
+                    text = article.title ?: "No title",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = article.description ?: "No-description", fontSize = 12.sp, fontWeight = FontWeight.Light)
+                Text(
+                    text = article.description ?: "No description",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
             }
         }
     }
