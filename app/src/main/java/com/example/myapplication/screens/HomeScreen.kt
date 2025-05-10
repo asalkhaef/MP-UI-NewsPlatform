@@ -105,9 +105,9 @@ fun NewsItemCard(article: Article) {
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = article.title ?: "No-title", fontWeight = FontWeight.Light, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = article.title ?: "No-title", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = article.description ?: "No-description", fontSize = 12.sp, fontWeight = FontWeight.W500)
+                Text(text = article.description ?: "No-description", fontSize = 12.sp, fontWeight = FontWeight.Light)
             }
         }
     }
