@@ -50,7 +50,6 @@ import com.example.newsapp.data.model.Article
 import com.example.newsapp.viewmodel.NewsViewModel
 
 
-data class NewsItem(val title: String, val description: String, val imageUrl: Int)
 
 data class BottomNavigationItem(
     val title: String,
@@ -93,7 +92,6 @@ fun NewsItemCard(article: Article) {
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            // نمایش تصویر با Coil
             AsyncImage(
                 model = article.urlToImage,
                 contentDescription = "News Image",
@@ -101,8 +99,8 @@ fun NewsItemCard(article: Article) {
                     .size(100.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.loading_pic), // تصویر جایگزین هنگام لود
-                error = painterResource(R.drawable.alert_pic) // تصویر جایگزین در صورت خطا
+                placeholder = painterResource(R.drawable.loading_pic),
+                error = painterResource(R.drawable.alert_pic)
             )
 
             Spacer(modifier = Modifier.width(16.dp))
