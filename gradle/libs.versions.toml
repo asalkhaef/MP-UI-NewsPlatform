@@ -33,7 +33,7 @@ androidx-navigation-runtime-android = { group = "androidx.navigation", name = "n
 
 [plugins]
 
-android-application = { id = "com.android.application", version = "8.3.1" }
+android-application = { id = "com.android.application", version = "8.8.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
