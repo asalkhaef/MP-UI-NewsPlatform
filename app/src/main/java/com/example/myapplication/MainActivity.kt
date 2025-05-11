@@ -26,13 +26,12 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
-                        // صفحه اصلی
                         val apiKey = "55d12b83a8914192b99f8841e32133f0"
                         val viewModel = NewsViewModel(apiKey)
-                        HomeScreen(viewModel, navController)  // ارسال navController به HomeScreen
+                        HomeScreen(viewModel, navController)
                     }
                     composable("detail") {
-                        NewsScreen(navController)  // صفحه تک خبر
+                        NewsScreen(navController)
                     }
                 }
             }
