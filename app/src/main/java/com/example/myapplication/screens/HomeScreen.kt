@@ -44,6 +44,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.newsapp.data.model.Article
@@ -60,7 +61,7 @@ data class BottomNavigationItem(
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun HomeScreen(viewModel: NewsViewModel) {
+fun HomeScreen(viewModel: NewsViewModel, navController: NavController) {
     val articles by viewModel.articles.collectAsState()
 
     Scaffold(
@@ -75,7 +76,7 @@ fun HomeScreen(viewModel: NewsViewModel) {
                 item { SearchBar() }
                 item { TrendingSection() }
                 items(articles) { article ->
-                    NewsItemCard(article)
+                    NewsItemCard(article, navController)
                 }
             }
         }
@@ -83,12 +84,13 @@ fun HomeScreen(viewModel: NewsViewModel) {
 }
 
 @Composable
-fun NewsItemCard(article: Article) {
+fun NewsItemCard(article: Article, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp)
-            .clickable { /* Handle click */ },
+            .clickable { navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
+                navController.navigate("detail") },
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
