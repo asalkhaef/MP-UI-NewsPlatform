@@ -14,6 +14,13 @@ class NewsViewModel(private val apiKey: String) : ViewModel() {
     private val _articles = MutableStateFlow<List<Article>>(emptyList())
     val articles: StateFlow<List<Article>> = _articles
 
+    private val _selectedArticle = MutableStateFlow<Article?>(null)
+    val selectedArticle: StateFlow<Article?> = _selectedArticle
+
+    fun selectArticle(article: Article) {
+        _selectedArticle.value = article
+    }
+
     init {
         fetchNews()
     }
