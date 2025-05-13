@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -15,7 +17,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,7 +42,11 @@ android {
 }
 
 dependencies {
-
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.android.gms:play-services-auth:21.0.0") // برای Google Sign-In
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -50,8 +55,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.runtime.android)
     implementation(libs.androidx.material.icons.extended)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.support.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,27 +67,19 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    //Json to Kotlin objects
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
-
-    // Kotlin Coroutine support for Room
     implementation("androidx.room:room-ktx:2.6.1")
-
     // Image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
-
     // Lifecycle ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     // Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    //Navigation
-    implementation ("androidx.navigation:navigation-compose:2.7.7")
-
+    implementation ("com.google.firebase:firebase-crashlytics:18.6.2")
+    implementation ("com.google.firebase:firebase-analytics")
 }

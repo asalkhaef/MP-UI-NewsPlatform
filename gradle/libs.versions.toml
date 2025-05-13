@@ -12,6 +12,7 @@ materialIconsExtended = "1.6.6"
 navigationCompose = "2.8.9"
 navigationRuntimeAndroid = "2.9.0-alpha08"
 navigationComposeAndroid = "2.9.0"
+supportAnnotations = "28.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,10 +33,11 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 androidx-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose-android", version.ref = "navigationComposeAndroid" }
+support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotations" }
 
 [plugins]
 
 android-application = { id = "com.android.application", version = "8.8.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.9" }
