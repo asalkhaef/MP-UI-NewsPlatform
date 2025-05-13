@@ -19,14 +19,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+
+import coil.compose.AsyncImage
+import com.example.newsapp.data.model.Article
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(navController: NavHostController) {
+
+
+    val article =
+        navController.previousBackStackEntry
+            ?.savedStateHandle
+            ?.get<Article>("article")
+
     var isBookmarked by remember { mutableStateOf(false) }
+
+
+    if (article == null) {
+        Text("No article found")
+        return
+    }
 
     Scaffold(
         topBar = {
@@ -54,11 +72,12 @@ fun NewsScreen(navController: NavHostController) {
                 }
             )
         }
-    ) { paddingValues ->
+    ){ paddingValues ->
         NewsContent(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
+                .fillMaxSize(),
+            article = article
         )
     }
 }
@@ -66,7 +85,7 @@ fun NewsScreen(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsContent(modifier: Modifier = Modifier) {
+fun NewsContent(modifier: Modifier = Modifier, article: Article) {
     Surface(
         color = Color.White,
         modifier = Modifier.fillMaxSize()
@@ -74,65 +93,47 @@ fun NewsContent(modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState()) // for scrolling if needed
+                .verticalScroll(rememberScrollState())
         ) {
-            // news img
-            Image(
-                painter = painterResource(id = R.drawable.pic_new_trending),
-                contentDescription = "news img",
+            AsyncImage(
+                model = article.urlToImage,
+                contentDescription = "News Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(350.dp),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.loading_pic),
+                error = painterResource(R.drawable.alert_pic)
             )
 
-            // total content
             Column(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                // News source + time
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "BBC News",
+                        text = article.source.name ?: "Unknown Source",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
                     Text(
-                        text = "14m ago",
+                        text = article.publishedAt ?: "Unknown Time",
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-                // divider
-                Divider(
-                    color = Color.LightGray,
-                    thickness = 1.dp
-                )
-
+                Divider(color = Color.LightGray, thickness = 1.dp)
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // news category
                 Text(
-                    text = "Europe",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Black
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // news title
-                Text(
-                    text = "Ukraine's President Zelensky to BBC: Blood money being paid for Russian oil",
+                    text = article.title ?: "No Title",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -140,9 +141,8 @@ fun NewsContent(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // news detail
                 Text(
-                    text = "Ukrainian President Volodymyr Zelensky has accused European countries that continue to buy Russian oil of \"earning their money in other people's blood\".\n\nIn an interview with the BBC, President Zelensky singled out Germany and Hungary, accusing them of blocking efforts to embargo energy sales, from which Russia stands to make up to £250bn ($326bn) this year.",
+                    text = article.content ?: article.description ?: "No Content",
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     color = Color.DarkGray
@@ -151,6 +151,7 @@ fun NewsContent(modifier: Modifier = Modifier) {
         }
     }
 }
+
 
 //@Preview(showBackground = true)
 //@Composable
