@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import com.example.myapplication.screens.BookmarkScreen
 import com.example.myapplication.screens.HomeScreen
 import com.example.myapplication.screens.NewsContent
 import com.example.newsapp.viewmodel.NewsViewModel
@@ -26,6 +27,9 @@ fun NewsNavHost(navController: NavHostController, viewModel: NewsViewModel) {
         }
         composable("profile"){
             ProfileScreen(navController = navController)
+        }
+        composable("bookmark") {
+            BookmarkScreen(navController)
         }
     }
 

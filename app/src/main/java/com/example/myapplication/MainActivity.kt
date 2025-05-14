@@ -37,6 +37,9 @@ class MainActivity : ComponentActivity() {
                     composable("profile") {
                         ProfileScreen(navController)
                     }
+                    composable("bookmark") {
+                        BookmarkScreen(navController)
+                    }
                 }
             }
 //                val apiKey = "55d12b83a8914192b99f8841e32133f0"

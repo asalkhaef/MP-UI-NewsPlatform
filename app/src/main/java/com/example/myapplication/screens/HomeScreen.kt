@@ -151,7 +151,7 @@ fun BottomNavigationBar(navController: NavController) {
                 onClick = { when (item.title) {
                     "Profile" -> navController.navigate("profile")
                     "Home" -> navController.navigate("home")
-                    "Bookmark" -> {}
+                    "Bookmark" -> navController.navigate("bookmark")
                 }},
                 icon = {
                     if (item.title == "Home") {
