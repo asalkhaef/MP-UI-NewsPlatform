@@ -8,6 +8,8 @@ import androidx.navigation.NavHostController
 import com.example.myapplication.screens.HomeScreen
 import com.example.myapplication.screens.NewsContent
 import com.example.newsapp.viewmodel.NewsViewModel
+import com.example.myapplication.screens.ProfileScreen
+
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -22,5 +24,10 @@ fun NewsNavHost(navController: NavHostController, viewModel: NewsViewModel) {
                 NewsContent(article = it)
             }
         }
+        composable("profile"){
+            ProfileScreen(navController = navController)
+        }
     }
+
 }
+

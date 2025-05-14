@@ -40,6 +40,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ fun HomeScreen(viewModel: NewsViewModel, navController: NavController) {
     val articles by viewModel.articles.collectAsState()
 
     Scaffold(
-        bottomBar = { BottomNavigationBar() },
+        bottomBar = { BottomNavigationBar(navController) },
         topBar = { CustomTopAppBar() },
         content = { paddingValues ->
             LazyColumn(
@@ -125,7 +126,7 @@ fun NewsItemCard(article: Article, navController: NavController) {
 }
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(navController: NavController) {
     val bottomNavigationItems = listOf(
         BottomNavigationItem(
             title = "Profile",
@@ -147,7 +148,11 @@ fun BottomNavigationBar() {
         bottomNavigationItems.forEach { item ->
             NavigationBarItem(
                 selected = false,
-                onClick = { },
+                onClick = { when (item.title) {
+                    "Profile" -> navController.navigate("profile")
+                    "Home" -> navController.navigate("home")
+                    "Bookmark" -> {}
+                }},
                 icon = {
                     if (item.title == "Home") {
                         Icon(

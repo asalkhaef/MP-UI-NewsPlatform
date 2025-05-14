@@ -45,7 +45,7 @@ fun NewsScreen(navController: NavHostController) {
             TopAppBar(
                 title = { Text("") },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = {navController.popBackStack()}) {
                         Icon(
                             painterResource(id = R.drawable.back_icon),
                             contentDescription = "Back"

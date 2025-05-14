@@ -20,18 +20,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
+
                 val navController = rememberNavController()
-      //         ProfileScreen()
+                //         ProfileScreen()
 
 
                 NavHost(navController = navController, startDestination = "home") {
                     composable("home") {
-                        val apiKey = "55d12b83a8914192b99f8841e32133f0"
+                        val apiKey = "b4aeb6ceab86413d80ade3ca2f0b2c20"
                         val viewModel = NewsViewModel(apiKey)
                         HomeScreen(viewModel, navController)
                     }
                     composable("detail") {
                         NewsScreen(navController)
+                    }
+                    composable("profile") {
+                        ProfileScreen(navController)
                     }
                 }
             }
