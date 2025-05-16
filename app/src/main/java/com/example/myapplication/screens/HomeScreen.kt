@@ -1,6 +1,7 @@
 package com.example.myapplication.screens
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -117,6 +118,7 @@ fun NewsItemCard(
         factory = BookmarkViewModelFactory(application)
     )
     val isBookmarked by viewModel.isBookmarked(article.url ?: "").collectAsState(initial = false)
+
 
     Card(
         modifier = Modifier

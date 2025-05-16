@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,10 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ViewModels.BookmarkViewModel
+import com.example.myapplication.ViewModels.BookmarkViewModelFactory
 import com.example.myapplication.screens.BookmarkScreen
 import com.example.myapplication.screens.HomeScreen
 import com.example.myapplication.screens.LoginScreen
@@ -23,6 +27,8 @@ import com.example.newsapp.viewmodel.NewsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+
+
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
@@ -63,9 +69,14 @@ class MainActivity : ComponentActivity() {
                         ProfileScreen(navController)
                     }
                     composable("bookmarks") {
-                        val bookmarkViewModel = BookmarkViewModel(application)
+                        val context = LocalContext.current
+                        val bookmarkViewModel: BookmarkViewModel = viewModel(
+                            factory = BookmarkViewModelFactory(context.applicationContext as Application)
+                        )
                         BookmarkScreen(bookmarkViewModel, navController)
                     }
+
+
                 }
             }
         }

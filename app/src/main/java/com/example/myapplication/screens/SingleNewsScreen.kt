@@ -52,18 +52,18 @@ fun NewsScreen(navController: NavHostController) {
                         )
                     }
                 },
-                actions = {
-                    IconButton(onClick = { isBookmarked = !isBookmarked }) {
-                        Image(
-                            painter = painterResource(
-                                id = if (isBookmarked) R.drawable.ic_bookmark_filled
-                                else R.drawable.ic_bookmark_empty
-                            ),
-                            contentDescription = "Bookmark",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
+//                actions = {
+//                    IconButton(onClick = { isBookmarked = !isBookmarked }) {
+//                        Image(
+//                            painter = painterResource(
+//                                id = if (isBookmarked) R.drawable.ic_bookmark_filled
+//                                else R.drawable.ic_bookmark_empty
+//                            ),
+//                            contentDescription = "Bookmark",
+//                            modifier = Modifier.size(24.dp)
+//                        )
+//                    }
+//                }
             )
         }
     ){ paddingValues ->
