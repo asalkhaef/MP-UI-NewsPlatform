@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myapplication.R
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -39,14 +40,21 @@ fun ProfileScreen(navController: NavController) {
     val fullName = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
 
+    val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+    LaunchedEffect(Unit) {
+        firebaseUser?.let { user ->
+            username.value = user.displayName ?: ""
+            email.value = user.email ?: ""
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
         Spacer(modifier = Modifier.height(16.dp))
 
         Icon(
@@ -69,7 +77,7 @@ fun ProfileScreen(navController: NavController) {
             modifier = Modifier.size(120.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.user_profile_icon), // یک عکس پیش‌فرض در drawable
+                painter = painterResource(id = R.drawable.user_profile_icon),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(120.dp)
@@ -77,7 +85,7 @@ fun ProfileScreen(navController: NavController) {
                     .border(2.dp, Color.Gray, CircleShape)
             )
             Icon(
-                imageVector = Icons.Default.CameraAlt, // Correct icon
+                imageVector = Icons.Default.CameraAlt,
                 contentDescription = "Edit Photo",
                 tint = Color.Black,
                 modifier = Modifier
@@ -110,11 +118,13 @@ fun ProfileScreen(navController: NavController) {
 
         OutlinedTextField(
             value = email.value,
-            onValueChange = { email.value = it },
-            label = { Text("Email Address*") },
-            isError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches(),
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = { }, // چون فیلد غیرفعاله نیازی به تغییر نداره
+            label = { Text("Email Address") },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false, //  کاربر نمی‌تونه تغییر بده
+            readOnly = true // فقط خواندنی
         )
+
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -126,4 +136,5 @@ fun ProfileScreen(navController: NavController) {
         ) {
             Text("Next")
         }
-    }}
+    }
+}
