@@ -1,5 +1,6 @@
 package com.example.myapplication.screens
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -45,9 +46,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
@@ -56,6 +61,16 @@ import com.example.newsapp.data.model.Article
 import com.example.newsapp.viewmodel.NewsViewModel
 
 
+
+class BookmarkViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(BookmarkViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return BookmarkViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
 data class BottomNavigationItem(
     val title: String,
@@ -89,13 +104,28 @@ fun HomeScreen(viewModel: NewsViewModel, navController: NavController) {
 }
 
 @Composable
-fun NewsItemCard(article: Article, navController: NavController) {
+fun NewsItemCard(
+    article: Article,
+    navController: NavController
+) {
+    // Get the application context at the Composable level
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
+
+    // Create the ViewModel using the application
+    val viewModel: BookmarkViewModel = viewModel(
+        factory = BookmarkViewModelFactory(application)
+    )
+    val isBookmarked by viewModel.isBookmarked(article.url ?: "").collectAsState(initial = false)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp)
-            .clickable { navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
-                navController.navigate("detail") },
+            .clickable {
+                navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
+                navController.navigate("detail")
+            },
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
@@ -111,7 +141,7 @@ fun NewsItemCard(article: Article, navController: NavController) {
             )
 
             Spacer(modifier = Modifier.width(16.dp))
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = article.title ?: "No title",
                     fontWeight = FontWeight.Bold,
@@ -125,6 +155,15 @@ fun NewsItemCard(article: Article, navController: NavController) {
                     fontWeight = FontWeight.Light
                 )
             }
+
+            Icon(
+                imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                contentDescription = "Bookmark",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable { viewModel.toggleBookmark(article) },
+                tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+            )
         }
     }
 }
@@ -293,63 +332,7 @@ fun TrendingSection() {
 
 
 // Add this to NewsItemCard in HomeScreen.kt
-@Composable
-fun NewsItemCard(
-    article: Article,
-    navController: NavController,
-    viewModel: BookmarkViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-) {
-    val isBookmarked by viewModel.isBookmarked(article.url ?: "").collectAsState(initial = false)
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp)
-            .clickable {
-                navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
-                navController.navigate("detail")
-            },
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-    ) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            AsyncImage(
-                model = article.urlToImage,
-                contentDescription = "News Image",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.loading_pic),
-                error = painterResource(R.drawable.alert_pic)
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = article.title ?: "No title",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = article.description ?: "No description",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Light
-                )
-            }
-
-            Icon(
-                imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                contentDescription = "Bookmark",
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable { viewModel.toggleBookmark(article) },
-                tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
-}
 //@Preview(showBackground = true)
 //@Composable
 //fun HomeScreenPreview() {
