@@ -21,6 +21,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CardDefaults
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.ViewModels.BookmarkViewModel
 import com.example.newsapp.data.model.Article
 import com.example.newsapp.viewmodel.NewsViewModel
 
@@ -151,7 +155,7 @@ fun BottomNavigationBar(navController: NavController) {
                 onClick = { when (item.title) {
                     "Profile" -> navController.navigate("profile")
                     "Home" -> navController.navigate("home")
-                    "Bookmark" -> {}
+                    "Bookmark" -> navController.navigate("bookmarks")
                 }},
                 icon = {
                     if (item.title == "Home") {
@@ -282,6 +286,66 @@ fun TrendingSection() {
                     .fillMaxWidth()
                     .height(200.dp)
                     .clip(RoundedCornerShape(20.dp))
+            )
+        }
+    }
+}
+
+
+// Add this to NewsItemCard in HomeScreen.kt
+@Composable
+fun NewsItemCard(
+    article: Article,
+    navController: NavController,
+    viewModel: BookmarkViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
+    val isBookmarked by viewModel.isBookmarked(article.url ?: "").collectAsState(initial = false)
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 8.dp)
+            .clickable {
+                navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
+                navController.navigate("detail")
+            },
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+    ) {
+        Row(modifier = Modifier.padding(16.dp)) {
+            AsyncImage(
+                model = article.urlToImage,
+                contentDescription = "News Image",
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.loading_pic),
+                error = painterResource(R.drawable.alert_pic)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = article.title ?: "No title",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = article.description ?: "No description",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
+            }
+
+            Icon(
+                imageVector = if (isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                contentDescription = "Bookmark",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable { viewModel.toggleBookmark(article) },
+                tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
             )
         }
     }

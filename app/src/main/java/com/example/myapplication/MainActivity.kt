@@ -12,6 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.ViewModels.BookmarkViewModel
+import com.example.myapplication.screens.BookmarkScreen
 import com.example.myapplication.screens.HomeScreen
 import com.example.myapplication.screens.LoginScreen
 import com.example.myapplication.screens.NewsScreen
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 var isLoggedIn by remember { mutableStateOf(auth.currentUser != null) }
 
+                // Update NavHost in MainActivity.kt
                 NavHost(navController = navController, startDestination = if (isLoggedIn) "home" else "login") {
                     composable("login") {
                         LoginScreen(
@@ -58,6 +61,10 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("profile") {
                         ProfileScreen(navController)
+                    }
+                    composable("bookmarks") {
+                        val bookmarkViewModel = BookmarkViewModel(application)
+                        BookmarkScreen(bookmarkViewModel, navController)
                     }
                 }
             }
